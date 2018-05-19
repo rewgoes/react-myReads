@@ -5,28 +5,22 @@ import BookShelf from './Bookshelf';
 
 class ListBooks extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired,
+    books: PropTypes.object.isRequired,
+    bookshelves: PropTypes.object.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired
   }
 
   render() {
-    const { books, onChangeBookshelf } = this.props
+    const { books, bookshelves, onChangeBookshelf } = this.props
 
-    /*
-      Split books into bookshelves
-    */
-    const bookshelves = books.reduce((shelves, book) => {
-      if (!shelves[book.shelf]) {
-        shelves[book.shelf] = [];
-      }
-      shelves[book.shelf].push(book);
-
-      return shelves;
-    }, {
-        currentlyReading: [],
-        wantToRead: [],
-        read: []
+    /**
+     * Change each book.id for its respective book
+     */
+    Object.keys(bookshelves).forEach((key) => {
+      bookshelves[key] = bookshelves[key].map((bookId) => {
+        return books[bookId]
       })
+    })
 
     return (
       <div className="list-books">
@@ -34,9 +28,9 @@ class ListBooks extends Component {
           <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
-          <BookShelf title="Currently Reading" books={bookshelves.currentlyReading} onChangeBookshelf={onChangeBookshelf} />
-          <BookShelf title="Want to Read" books={bookshelves.wantToRead} onChangeBookshelf={onChangeBookshelf} />
-          <BookShelf title="Read" books={bookshelves.read} onChangeBookshelf={onChangeBookshelf} />
+          <BookShelf title="Currently Reading" books={bookshelves.currentlyReading || []} onChangeBookshelf={onChangeBookshelf} />
+          <BookShelf title="Want to Read" books={bookshelves.wantToRead || []} onChangeBookshelf={onChangeBookshelf} />
+          <BookShelf title="Read" books={bookshelves.read || []} onChangeBookshelf={onChangeBookshelf} />
         </div>
         <div className="open-search">
           <Link

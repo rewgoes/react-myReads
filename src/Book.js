@@ -21,7 +21,6 @@ class Book extends Component {
             }
           }></div>
           <div className="book-shelf-changer">
-            {!book.imageLinks && console.log(book)}
             <select defaultValue={book.shelf ? book.shelf : "none"} onChange={(event) => onChangeBookshelf(book, event.target.value)}>
               <option value="moveTo" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>

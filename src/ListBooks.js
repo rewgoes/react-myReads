@@ -6,11 +6,16 @@ import BookShelf from './Bookshelf';
 class ListBooks extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    onChangeBookshelf: PropTypes.func.isRequired 
+    onChangeBookshelf: PropTypes.func.isRequired
   }
 
   render() {
-    const bookshelves = this.props.books.reduce((shelves, book) => {
+    const { books, onChangeBookshelf } = this.props
+
+    /*
+      Split books into bookshelves
+    */
+    const bookshelves = books.reduce((shelves, book) => {
       if (!shelves[book.shelf]) {
         shelves[book.shelf] = [];
       }
@@ -29,9 +34,9 @@ class ListBooks extends Component {
           <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
-          <BookShelf title="Currently Reading" books={bookshelves.currentlyReading} onChangeBookshelf={this.props.onChangeBookshelf} />
-          <BookShelf title="Want to Read" books={bookshelves.wantToRead} onChangeBookshelf={this.props.onChangeBookshelf} />
-          <BookShelf title="Read" books={bookshelves.read} onChangeBookshelf={this.props.onChangeBookshelf} />
+          <BookShelf title="Currently Reading" books={bookshelves.currentlyReading} onChangeBookshelf={onChangeBookshelf} />
+          <BookShelf title="Want to Read" books={bookshelves.wantToRead} onChangeBookshelf={onChangeBookshelf} />
+          <BookShelf title="Read" books={bookshelves.read} onChangeBookshelf={onChangeBookshelf} />
         </div>
         <div className="open-search">
           <Link

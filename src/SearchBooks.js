@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Book from './Book';
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
+  static propTypes = {
+    userBooks: PropTypes.array.isRequired
+  }
+
   state = {
     query: '',
     books: []
@@ -16,6 +21,10 @@ class SearchBooks extends Component {
         if (books.error) {
           this.setState({ books: [] })
         } else {
+          books.forEach(book => {
+            var findBook = this.props.userBooks.find(userBook => book.id === userBook.id)
+            findBook && (book.shelf = findBook.shelf)
+          })
           this.setState({ books: books })
         }
       })

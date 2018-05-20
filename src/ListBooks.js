@@ -11,16 +11,17 @@ class ListBooks extends Component {
   }
 
   render() {
-    const { books, bookshelves, onChangeBookshelf } = this.props
+    const { books, onChangeBookshelf } = this.props
 
     /**
      * Change each book.id for its respective book
      */
-    Object.keys(bookshelves).forEach((key) => {
-      bookshelves[key] = bookshelves[key].map((bookId) => {
+    const bookshelves = Object.keys(this.props.bookshelves).reduce((map, key) => {
+      map[key] = this.props.bookshelves[key].map((bookId) => {
         return books[bookId]
       })
-    })
+      return map
+    }, {})
 
     return (
       <div className="list-books">

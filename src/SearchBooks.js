@@ -61,19 +61,22 @@ class SearchBooks extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          {(books && books.length > 0) ?
-            (<ol className="books-grid">
-              {books && books.map((book) => (
-                <li key={book.id}>
-                  <Book book={book} onChangeBookshelf={this.props.onChangeBookshelf} />
-                </li>
-              ))}
-            </ol>)
-            : query && hasResult && (
-              <div className="empty-list">
-                There is not book with the search term {query}
-              </div>
-            )
+          {
+            (books && books.length > 0) ? (
+              <ol className="books-grid">
+                {books && books.map((book) => (
+                  <li key={book.id}>
+                    <Book book={book} onChangeBookshelf={this.props.onChangeBookshelf} />
+                  </li>
+                ))}
+              </ol>
+            ) : (
+                query && hasResult && (
+                  <div className="empty-list">
+                    There is not book with the search term {query}
+                  </div>
+                )
+              )
           }
         </div>
       </div>

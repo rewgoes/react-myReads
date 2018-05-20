@@ -298,3 +298,14 @@ body, .app {
     transform: rotate(360deg);
   }
 }
+
+.modal-left {
+  width: 140px;
+  float:left;
+}
+.modal-right {
+  margin-left: 140px;
+}
+.modal-body {
+  min-height: 350px;
+}

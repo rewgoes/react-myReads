@@ -172,3 +172,8 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+.empty-list {
+  text-align: center;
+  margin: 20px 0;
+}

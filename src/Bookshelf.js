@@ -16,13 +16,19 @@ class BookShelf extends Component {
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>
         <div className="bookshelf-books">
-          <ol className="books-grid">
-            {books && books.map((book) => (
-              <li key={book.id}>
-                <Book book={book} onChangeBookshelf={onChangeBookshelf} />
-              </li>
-            ))}
-          </ol>
+          {(!books || books.length === 0) ?
+            (<div className="empty-list">
+              Empty list
+            </div>)
+            :
+            (<ol className="books-grid">
+              {books && books.map((book) => (
+                <li key={book.id}>
+                  <Book book={book} onChangeBookshelf={onChangeBookshelf} />
+                </li>
+              ))}
+            </ol>
+            )}
         </div>
       </div>
     )

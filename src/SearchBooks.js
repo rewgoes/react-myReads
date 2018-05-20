@@ -7,20 +7,21 @@ import * as BooksAPI from './BooksAPI'
 class SearchBooks extends Component {
   static propTypes = {
     userBooks: PropTypes.object.isRequired,
-    onChangeBookshelf: PropTypes.func.isRequired 
+    onChangeBookshelf: PropTypes.func.isRequired
   }
 
   state = {
     query: '',
+    hasResult: false,
     books: []
   }
 
   serchBooks = (query) => {
-    this.setState({ query: query })
+    this.setState({ query: query, hasResult: false })
     if (query) {
       BooksAPI.search(query).then(books => {
         if (books.error) {
-          this.setState({ books: [] })
+          this.setState({ books: [], hasResult: true })
         } else {
           /**
            * Set book's bookshelf
@@ -29,7 +30,7 @@ class SearchBooks extends Component {
             const findBook = this.props.userBooks[book.id]
             findBook && (book.shelf = findBook.shelf)
           })
-          this.setState({ books: books })
+          this.setState({ books: books, hasResult: true })
         }
       })
     } else {
@@ -42,7 +43,7 @@ class SearchBooks extends Component {
   }
 
   render() {
-    const { books, query } = this.state
+    const { books, query, hasResult } = this.state
 
     return (
       <div className="search-books">
@@ -60,13 +61,20 @@ class SearchBooks extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {books && books.map((book) => (
-              <li key={book.id}>
-                <Book book={book} onChangeBookshelf={this.props.onChangeBookshelf} />
-              </li>
-            ))}
-          </ol>
+          {(books && books.length > 0) ?
+            (<ol className="books-grid">
+              {books && books.map((book) => (
+                <li key={book.id}>
+                  <Book book={book} onChangeBookshelf={this.props.onChangeBookshelf} />
+                </li>
+              ))}
+            </ol>)
+            : query && hasResult && (
+              <div className="empty-list">
+                There is not book with the search term {query}
+              </div>
+            )
+          }
         </div>
       </div>
     )

@@ -8,7 +8,8 @@ import './App.css'
 class BooksApp extends Component {
   state = {
     books: {},
-    bookshelves: {}
+    bookshelves: {},
+    loading: true
   }
 
   componentDidMount() {
@@ -16,6 +17,7 @@ class BooksApp extends Component {
   }
 
   getAllBooks() {
+    this.setState({ loading: true })
     BooksAPI.getAll().then(allBooks => {
       /**
        * Spit allBooks into a bookshelves and a map of books
@@ -30,11 +32,12 @@ class BooksApp extends Component {
         map[book.id] = book
         return map;
       }, {})
-      this.setState({ books, bookshelves })
+      this.setState({ books, bookshelves, loading: false })
     });
   }
 
   changeBookShelf = (book, shelf) => {
+    this.setState({ loading: true })
     BooksAPI.update(book, shelf).then(bookshelves => {
       /**
        * Modify state manually instead of calling BooksAPI.getAll()
@@ -49,12 +52,12 @@ class BooksApp extends Component {
         books[book.id] = book
         books[book.id].shelf = shelf
       }
-      this.setState({ books, bookshelves })
+      this.setState({ books, bookshelves, loading: false })
     })
   }
 
   render() {
-    const { books, bookshelves } = this.state
+    const { books, bookshelves, loading } = this.state
 
     return (
       <div className="app">
@@ -64,6 +67,9 @@ class BooksApp extends Component {
         <Route path="/search" render={() => (
           <SearchBooks userBooks={books} onChangeBookshelf={this.changeBookShelf} />
         )} />
+        {loading && (
+          <div className="loading" />
+        )}
       </div>
     )
   }

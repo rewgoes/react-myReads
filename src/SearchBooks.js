@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Book from './Book';
+import debounce from 'lodash/debounce';
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
@@ -16,7 +17,7 @@ class SearchBooks extends Component {
     books: []
   }
 
-  serchBooks = (query) => {
+  serchBooks = debounce((query) => {
     this.setState({ query: query, hasResult: false })
     if (query) {
       BooksAPI.search(query).then(books => {
@@ -36,7 +37,7 @@ class SearchBooks extends Component {
     } else {
       this.setState({ books: [] })
     }
-  }
+  }, 300)
 
   componentDidMount() {
     this.searchInput.focus();
@@ -56,7 +57,6 @@ class SearchBooks extends Component {
               }}
               type="text"
               placeholder="Search by title or author"
-              value={query}
               onChange={(event) => this.serchBooks(event.target.value)} />
           </div>
         </div>
